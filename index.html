@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSisters - Prototipo 1.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f3ff 0%, #fce7f3 50%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav button {
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            background: #f3f4f6;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            color: #4b5563;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        nav button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        h2 {
+            color: #1f2937;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+        }
+
+        .card h3 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            color: #374151;
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button.enviar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        button.enviar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button.enviar:active {
+            transform: translateY(0);
+        }
+
+        .welcome-section {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .welcome-section p {
+            color: #6b7280;
+            font-size: 1.2em;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-card h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .referente-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .referente-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            flex-shrink: 0;
+        }
+
+        .referente-info {
+            flex: 1;
+        }
+
+        .resource-card {
+            cursor: pointer;
+        }
+
+        .resource-card::before {
+            content: "📄";
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            nav button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .referente-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TechSisters</h1>
+        <p>Red de Mentorías y Referentes Femeninos en Tecnología</p>
+    </header>
+
+    <nav>
+        <button onclick="show('home')" class="nav-btn active">🏠 Inicio</button>
+        <button onclick="show('mentorias')" class="nav-btn">👥 Mentorías</button>
+        <button onclick="show('referentes')" class="nav-btn">⭐ Referentes</button>
+        <button onclick="show('recursos')" class="nav-btn">📚 Recursos</button>
+    </nav>
+
+    <div class="container">
+        <div id="home" class="screen active">
+            <h2>Bienvenida a TechSisters</h2>
+            
+            <div class="welcome-section">
+                <p>TechSisters es una plataforma donde mujeres en tecnología pueden conectar con mentoras expertas, acceder a recursos exclusivos y encontrar referentes inspiradoras que las guíen en su camino profesional.</p>
+                <button class="enviar" onclick="show('mentorias')">Solicitar una Mentoría →</button>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="icon">👥</div>
+                    <h3>Mentorías 1:1</h3>
+                    <p>Conecta con profesionales expertas que te guiarán en tu desarrollo profesional.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⭐</div>
+                    <h3>Referentes</h3>
+                    <p>Conoce historias inspiradoras de mujeres líderes en tecnología.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📚</div>
+                    <h3>Recursos</h3>
+                    <p>Accede a guías, talleres y herramientas para acelerar tu aprendizaje.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="mentorias" class="screen">
+            <h2>Solicitar una Mentoría</h2>
+
+            <div class="card">
+                <p style="text-align: center; margin-bottom: 20px; color: #6b7280;">Completa el formulario y nos pondremos en contacto contigo para conectarte con la mentora ideal.</p>
+
+                <label>Nombre completo</label>
+                <input type="text" placeholder="Tu nombre completo">
+
+                <label>Correo electrónico</label>
+                <input type="email" placeholder="tu@email.com">
+
+                <label>Área de interés</label>
+                <select>
+                    <option value="">Selecciona un área</option>
+                    <option>Frontend Development</option>
+                    <option>Backend Development</option>
+                    <option>UX/UI Design</option>
+                    <option>Data Science</option>
+                    <option>DevOps</option>
+                    <option>Ciberseguridad</option>
+                </select>
+
+                <label>¿Qué buscas aprender o lograr con esta mentoría?</label>
+                <textarea rows="5" placeholder="Describe tus objetivos y expectativas..."></textarea>
+
+                <button class="enviar">Enviar solicitud</button>
+            </div>
+        </div>
+
+        <div id="referentes" class="screen">
+            <h2>Referentes Femeninas en Tecnología</h2>
+
+            <div class="card referente-card">
+                <div class="referente-icon">👤</div>
+                <div class="referente-info">
+                    <h3>María González – Backend Engineer</h3>
+                    <p><strong>Empresa:</strong> Google</p>
+                    <p>Experta en microservicios y cloud computing. Más de 10 años de experiencia liderando equipos de desarrollo.</p>
+                </div>
+            </div>
+
+            <div class="card referente-card">
+                <div class="referente-icon">👤</div>
+                <div class="referente-info">
+                    <h3>Ana Martínez – UX/UI Designer</h3>
+                    <p><strong>Empresa:</strong> Airbnb</p>
+                    <p>Especialista en accesibilidad y diseño centrado en el usuario. Creadora de sistemas de diseño para productos digitales.</p>
+                </div>
+            </div>
+
+            <div class="card referente-card">
+                <div class="referente-icon">👤</div>
+                <div class="referente-info">
+                    <h3>Laura Fernández – Data Scientist</h3>
+                    <p><strong>Empresa:</strong> Microsoft</p>
+                    <p>Líder en proyectos de Machine Learning e Inteligencia Artificial. Mentora activa en comunidades tech.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="recursos" class="screen">
+            <h2>Recursos Disponibles</h2>
+
+            <div class="card resource-card">
+                <h3>Guía: Cómo iniciar en programación</h3>
+                <p>Una guía completa para dar tus primeros pasos en el mundo del desarrollo de software.</p>
+            </div>
+
+            <div class="card resource-card">
+                <h3>Video: Tips para tu primera entrevista tech</h3>
+                <p>Consejos prácticos y ejemplos reales para prepararte para entrevistas técnicas.</p>
+            </div>
+
+            <div class="card resource-card">
+                <h3>Plantilla: CV profesional para tecnología</h3>
+                <p>Formato optimizado para destacar tus habilidades técnicas y proyectos.</p>
+            </div>
+
+            <div class="card resource-card">
+                <h3>Workshop: Introducción a Git y GitHub</h3>
+                <p>Aprende control de versiones y colaboración en proyectos de software.</p>
+            </div>
+
+            <div class="card resource-card">
+                <h3>Guía: Networking efectivo en la industria tech</h3>
+                <p>Estrategias para construir tu red profesional y crear oportunidades.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function show(id) {
+            // Remover clase active de todas las pantallas
+            document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+            
+            // Agregar clase active a la pantalla seleccionada
+            document.getElementById(id).classList.add("active");
+            
+            // Actualizar botones de navegación
+            document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+            event.target.classList.add("active");
+            
+            // Scroll al inicio
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
